@@ -20,7 +20,7 @@ if %errorlevel% equ 0 (
 )
 
 :: 1. Virtual Environment Check
-echo [Step 1/4] Checking Virtual Environment...
+echo [Step 1/5] Checking Virtual Environment...
 venv\Scripts\python --version > nul 2>&1
 if %errorlevel% neq 0 (
     echo [Note] venv not found or incomplete. Initializing...
@@ -30,15 +30,21 @@ if %errorlevel% neq 0 (
 )
 
 :: 2. Activate Environment
-echo [Step 2/4] Activating environment...
+echo [Step 2/5] Activating environment...
 call venv\Scripts\activate
-
-:: Confirmation message after screen clearing
-echo Virtual Environment Activated. Step 1/4 and Step 2/4 are completed.
+echo [OK] Virtual Environment Activated. Step 1/5 and Step 2/5 are completed.
 echo.
 
-:: 3. Load Model
-echo [Step 3/4] Loading AI Model...
+:: 3. Install/Update Dependencies
+echo [Step 3/5] Checking and installing dependencies...
+pip install -r requirements.txt
+
+:: Confirmation message after screen clearing
+echo Virtual Environment Activated and Dependencies checked.
+echo.
+
+:: 4. Load Model
+echo [Step 4/5] Loading AI Model...
 lms load gemma-4-e4b-it-text-only
 if %errorlevel% neq 0 (
     echo [Note] Could not load model via CLI.
@@ -46,8 +52,8 @@ if %errorlevel% neq 0 (
     echo [OK] Model loaded.
 )
 
-:: 4. Start Server
-echo [Step 4/4] Starting FastAPI backend in a new window...
+:: 5. Start Server
+echo [Step 5/5] Starting FastAPI backend in a new window...
 echo ------------------------------------------
 start cmd /k "uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
 
