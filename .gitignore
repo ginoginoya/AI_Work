@@ -1,0 +1,27 @@
+# Folder exclusions requested by user
+Test/
+Backup/
+
+# Python environment and cache
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local Databases/Data folders
+my_fatek_db/
+Data/
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs
+*.log

@@ -1,0 +1,378 @@
+/* 基本佈局 */
+html {
+    height: 100vh;
+    height: 100dvh;
+}
+
+body {
+    font-family: "Microsoft JhengHei", sans-serif; /* 設定字體優先順序，首選微軟正黑體 */
+    display: flex; /* 彈性佈局(Flexbox)，預設橫向排列，讓聊天區與參考區左右並排 */
+    height: 100%;
+    margin: 0; /* 清除瀏覽器預設的邊距 */
+    background: #f0f2f5; /* 設定底色為淡灰色 */
+}
+
+/* 左側對話區 */
+#chat-container {
+    flex: 1; /* 彈性分配比例；設定為 1 表示自動佔滿除了右側固定區塊之外的所有剩餘寬度 */
+    display: flex; /* 內部也使用彈性佈局 */
+    flex-direction: column; /* 內容由上往垂直排列 */
+    border-right: 2px solid #ddd; /* 右邊邊界線 */
+    background: white; /* 對話區背景 */
+}
+
+/* 歷史對話紀錄區域：存放所有聊天氣泡(對話內容)的地方 */
+#chat-history {
+    flex: 1; /* 在垂直佈局中設定為 1，表示自動佔滿除了輸入區之外的所有剩餘高度 */
+    padding: 20px; /* 內部邊距 */
+    overflow-y: auto; /* 過多時產生垂直捲軸 */
+    display: flex; /* 彈性佈局；這是啟動 align-self 的必要前提，讓使用者訊息靠右、AI 靠左對齊 */
+    flex-direction: column; /* 訊息由上往下排 */
+    gap: 15px; /* 訊息與訊息之間的間距 */
+}
+
+/* 訊息氣泡樣式 */
+.message {
+    padding: 12px 16px; /* 訊息內部的上下左右間距 */
+    border-radius: 15px; /* 氣泡圓角設定 */
+    max-width: 80%; /* 訊息最寬只佔畫面 80% */
+    line-height: 1.6; /* 行高，倍數單位(文字大小 * 1.6) */
+    word-wrap: break-word; /* 當單字太長時自動換行，避免破圖 */
+}
+
+/* 使用者訊息氣泡樣式 */
+.user-msg { 
+    background: #007bff; /* 使用者藍色背景 */
+    color: white; /* 文字白色 */
+    align-self: flex-end; /* 將訊息推向右側對齊 */
+    border-bottom-right-radius: 2px; /* 產生對話標記感 */
+}
+
+/* AI 訊息氣泡樣式 */
+.ai-msg { 
+    background: #f1f3f4; /* AI 淺灰色背景 */
+    color: #333; /* 文字深灰色 */
+    align-self: flex-start; /* 將訊息推向左側對齊 */
+    border-bottom-left-radius: 2px;
+}
+
+/* 針對 Markdown 產生的 HTML 標籤進行微調 */
+.ai-msg p { margin: 5px 0; }               /* 段落間距 */
+.ai-msg ul, .ai-msg ol { padding-left: 20px; margin: 10px 0; } /* 清單縮進 */
+.ai-msg li { margin-bottom: 5px; }         /* 清單項目間距 */
+.ai-msg strong { color: #000; }            /* 粗體字加深顏色 */
+
+/* 程式碼區塊樣式 (例如：PLC 範例程式) */
+.ai-msg pre {
+    background: #2d2d2d;                      /* 深色背景 */
+    color: #f8f8f2;                           /* 淺色文字 */
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;                         /* 若太長則顯示橫向捲軸 */
+    font-family: 'Consolas', monospace;       /* 使用等寬字體 */
+    margin: 10px 0;
+}
+
+/* 行內程式碼樣式 (例如：指令或暫存器名稱) */
+.ai-msg code {
+    background: #e9ecef;                      /* 淺灰色背景 */
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: #d63384;                           /* 桃紅色文字，突顯重點 */
+    font-family: 'Consolas', monospace;
+}
+
+/* 排除掉 pre 內部的 code 背景，避免重複疊加 */
+.ai-msg pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* 表格基礎樣式 */
+.ai-msg table {
+    border-collapse: collapse;                /* 合併邊框 */
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 表格儲存格樣式 */
+.ai-msg td {
+    border: 1px solid #dee2e6;                /* 稍微加深邊框顏色 */
+    padding: 10px 12px;                       /* 增加內邊距，讓文字不擁擠 */
+    text-align: left;
+    background-color: #d5e0eb;
+}
+
+/* 表格標題列：顏色加深，文字加粗 */
+.ai-msg th {
+    border: 1px solid #dee2e6;                /* 稍微加深邊框顏色 */
+    padding: 10px 12px;                       /* 增加內邊距，讓文字不擁擠 */
+    text-align: left;
+    background-color: #9abde0;                /* 明顯的灰色背景 */
+    font-weight: bold;
+    color: #212529;
+}
+
+/* 滑鼠懸停效果：增加互動感 */
+.ai-msg tr:hover {
+    background-color: #f1f3f4;
+}
+
+/* 輸入區 */
+#input-area {
+    padding: 20px; /* 邊距 */
+    border-top: 1px solid #eee; /* 上方區隔線 */
+    display: flex; /* 輸入框跟按鈕並排 */
+    gap: 10px; /* 間距 */
+}
+
+
+
+/* 文字輸入框基礎樣式 */
+input { 
+    flex: 1; /* 自動撐滿剩餘寬度 */
+    padding: 12px; /* 文字間距 */
+    border: 1px solid #ddd; /* 淺灰色邊框 */
+    border-radius: 25px; /* 圓柱狀外觀 */
+    outline: none; /* 移除瀏覽器內建且較粗的點擊外環 (Focus Ring) */
+    font-size: 16px;
+}
+input:focus { border-color: #007bff; } /* 當輸入框被點擊(聚焦)時，邊框變藍色 */
+
+/* 通用按鈕基礎樣式 */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s; /* 增加過渡效果讓點擊感更平滑 */
+}
+
+/* 漢堡選單容器 */
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* 選單按鈕樣式 */
+#menu-btn {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+#menu-btn:hover {
+    background: #e9ecef;
+    color: #000;
+}
+
+/* 下拉選單內容 */
+.dropdown-content {
+    display: none; /* 預設隱藏 */
+    position: absolute;
+    bottom: 50px; /* 彈出位置在按鈕上方 */
+    right: 0;
+    background-color: white;
+    min-width: 140px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    z-index: 1000;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+/* 選單內的按鈕樣式 */
+.dropdown-content button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    border-radius: 0;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropdown-content button:hover {
+    background-color: #f1f3f4; /* 滑過時變深色 */
+}
+
+/* 警示項目的顏色 */
+.dropdown-content button.danger-item {
+    color: #dc3545;
+}
+.dropdown-content button.danger-item:hover {
+    background-color: #fff5f5;
+}
+
+/* 顯示選單的類別 */
+.show {
+    display: block !important;
+}
+
+button#send-btn { background: #007bff; color: white; }
+button#send-btn:hover { background: #0056b3; }
+
+button#stop-btn { background: #dc3535; color: white; border: 1px solid #ddd; }
+button#stop-btn:hover { background: #b02a2a; }
+
+/* 右側參考區 */
+#ref-container {
+    width: 380px; /* 固定寬度 380px */
+    padding: 20px; /* 內部邊距 */
+    overflow-y: auto; /* 顯示捲軸 */
+    background: #f8f9fa; /* 淺灰色背景 */
+}
+
+
+
+/* 參考資料標題與筆數排列 */
+#ref-container h3 {
+    color: #444;
+    margin-bottom: 10px; /* 藍色底線與下方卡片的距離 */
+    padding-bottom: 10px; /* 文字與藍色底線之間的距離 */
+    border-bottom: 2px solid #007bff;
+    display: flex;
+    align-items: center; /* 垂直居中對齊：讓大小字體在中線對齊 */
+    justify-content: space-between; /* 左右撐開：標題靠左，筆數靠右 */
+}
+
+/* 參考資料筆數的樣式 */
+#ref-count {
+    font-size: 0.85em;
+    color: #888;
+    font-weight: normal; /* 取消粗體：讓筆數資訊看起來像副標題 */
+}
+
+/* 參考卡片樣式 */
+.ref-card {
+    background: white; /* 背景白色 */
+    padding: 15px; /* 內部間距 */
+    margin-bottom: 15px; /* 卡片間距 */
+    border-radius: 8px; /* 圓角 */
+    font-size: 0.9em; /* 相對於父元素的字體倍率 (0.9em = 90%) */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 陰影：水平 0, 垂直 2px, 模糊 5px, 透明度 5% 黑 */
+    border-left: 4px solid #28a745; /* 左側 4px 綠線代表參考來源 */
+}
+.ref-card strong { color: #007bff; } /* 卡片標題(來源)顏色 */
+.ref-card p { color: #666; margin: 8px 0; } /* 內容摘要文字顏色與上下間距 */
+
+/* 開啟 PDF 按鈕 */
+.open-btn {
+    background: #28a745; /* 開啟 PDF 使用綠色 */
+    color: white; /* 白色文字 */
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+.open-btn:hover { background: #218838; }
+
+/* 針對對話框內按鈕的微調 */
+.message .open-btn {
+    margin: 5px 2px;
+    vertical-align: middle;
+}
+
+/* --- 動態功能樣式 (從 HTML 搬移至此) --- */
+
+/* 思考中動畫 */
+.loading-dots::after {
+    content: '...';                               /* 在元素內容後方插入點號 */
+    display: inline-block;                        /* 設為行內區塊，以便設定寬度 */
+    width: 3em;                                   /* 固定寬度，防止點號增減時導致訊息框抖動 */
+    text-align: left;                             /* 文字靠左對齊 */
+    animation: dots 2s steps(5, end) infinite;    /* 執行動畫，週期 2 秒，無限循環 */
+}
+
+/* 定義點點點的跳動幀數 */
+@keyframes dots { 
+    0%, 15% { content: '.'; }                      
+    30% { content: '...'; }                         
+    45% { content: '.....'; }                        
+    60% { content: '.......'; }                       
+    75% { content: '.........'; }                     
+    90% { content: '...........'; }                     
+}
+
+/* 當輸入框與按鈕處於禁用 (disabled) 狀態時的樣式 */
+input:disabled, button:disabled { 
+    opacity: 0.6;                                 
+    cursor: not-allowed;                          
+}
+
+/* 停止按鈕樣式 (發送後由 JS 顯示) */
+button#stop-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    display: none;
+    transition: background 0.2s;
+}
+button#stop-btn:hover { background: #c82333; }
+
+/* 顏色工具類別 */
+.text-red { color: red; }
+.text-orange { color: orange; }
+.text-gray { color: #999; }
+
+/* --- RWD: iPad & Mobile Optimization --- */
+@media (max-width: 1024px) {
+    body {
+        flex-direction: column; /* 改為上下堆疊 */
+    }
+
+    #chat-container {
+        height: 60%;
+        flex: none;
+        border-right: none;
+        border-bottom: 2px solid #ddd;
+    }
+
+    #ref-container {
+        height: 40%;
+        flex: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* 縮小氣泡最大寬度，避免在小螢幕太佔空間 */
+    .message {
+        max-width: 90%;
+    }
+
+    /* 調整輸入區在小螢幕的間距 */
+    #input-area {
+        padding: 15px; /* 直向模式下，輸入區位於中間，不需加安全區域補償 */
+    }
+}
+
+
+
+/* 橫向模式 (Landscape)：維持左右並排，但改用百分比寬度 */
+@media (max-width: 1024px) and (orientation: landscape) {
+    #ref-container {
+        width: 30%; /* 從固定的 380px 改為彈性的 30%，確保不會擠壓聊天區 */
+        min-width: 300px;
+    }
+}
+
+
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html> <!-- 宣告此文件為 HTML5 標準 -->
+<html lang="zh-TW"> <!-- 設定網頁語系為繁體中文 -->
+<head>
+    <meta charset="UTF-8"> <!-- 設定網頁編碼為 UTF-8，避免中文亂碼 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- name="viewport" 定義這是視窗規格；width=device-width 寬度隨手機調整；initial-scale=1.0 初始不縮放 -->
+    <title>永宏 PLC 智能知識庫</title> <!-- 瀏覽器分頁標籤顯示的標題 -->
+    <link rel="stylesheet" href="style.css"> <!-- 引入外部 CSS 樣式表 -->
+    <!-- 使用本地 Markdown 解析庫 (支援離線使用) -->
+    <script src="marked.min.js"></script> <!-- 引入解析 Markdown 格式的工具，目前只使用 marked.parse()方法-->
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-history">
+            <div class="message ai-msg">您好！我是永宏 PLC 技術支援助手。請問有什麼我可以幫您的？</div>
+        </div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="例如：高速計數器如何接線？" onkeypress="if(event.keyCode==13) askQuestion()">
+            <button id="send-btn" onclick="askQuestion()">提問</button>
+            <button id="stop-btn" onclick="stopWaiting()">停止</button>
+            
+            <!-- 漢堡選單按鈕 -->
+            <div class="menu-container">
+                <button id="menu-btn" onclick="toggleMenu()" title="選單">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div id="dropdown-menu" class="dropdown-content">
+                    <button onclick="downloadChat()">下載紀錄</button>
+                    <button onclick="clearChat()" class="danger-item">清空對話</button>
+                </div>
+            </div>
+            
+            <!-- 暫時隱藏連貫對話功能 -->
+            <button id="settings-btn" onclick="toggleSettings()" style="display: none;">連貫對話：關</button>
+        </div>
+    </div>
+
+    <div id="ref-container">
+        <h3>參考手冊片段 (RAG) <span id="ref-count"></span></h3>
+        <div id="ref-list">
+            <p class="text-gray">提問後，相關手冊片段將顯示於此。</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script> <!-- 引入自訂的邏輯程式碼 (提問、停止、顯示回答等) -->
+</body>
+</html>
