@@ -1,0 +1,8 @@
+fastapi                # 網頁 API 框架主程式
+uvicorn                # 啟動 API 伺服器的工具
+chromadb               # 向量資料庫（存 PLC 知識的地方）
+requests               # 用來跟 LM Studio 通訊的工具
+sentence-transformers  # 把文字轉換成數字向量的運算模型
+pymupdf                # 讀取 PDF 手冊內容的工具
+python-dotenv          # 讀取 .env 環境變數的工具
+

@@ -7,7 +7,11 @@ import chromadb
 import requests
 import subprocess # 新增：用於執行系統指令，目前僅保留未使用
 from chromadb.utils import embedding_functions
-from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse  # 加上 HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
+from dotenv import load_dotenv
+
+# 讀取 .env 檔案中的設定
+load_dotenv()
 
 app = FastAPI()
 
@@ -24,9 +28,9 @@ client = chromadb.PersistentClient(path=os.path.join(".", "my_fatek_db"))
 emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name="paraphrase-multilingual-MiniLM-L12-v2"
 )
-collection = client.get_collection(name="plc_manuals", embedding_function=emb_fn)
+collection = client.get_collection(name=os.getenv("COLLECTION_NAME", "plc_manuals"), embedding_function=emb_fn)
 
-LLM_API_URL = "http://localhost:1234/v1/chat/completions"
+LLM_API_URL = os.getenv("LLM_API_URL", "http://localhost:1234/v1/chat/completions")
 
 def call_llm(user_query, context_fragments, history=None):
     context_text = "\n\n".join([f"--- 來源: {f['path']} ---\n{f['content']}" for f in context_fragments])
@@ -47,7 +51,7 @@ def call_llm(user_query, context_fragments, history=None):
     prompt_content += f"【目前問題】：\n{user_query}"
 
     payload = {
-        "model": "gemma-4-e4b-it-text-only",
+        "model": os.getenv("LLM_MODEL_NAME", "gemma-4-e4b-it-text-only"),
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt_content}
@@ -139,9 +143,3 @@ app.mount("/pdf_view", StaticFiles(directory="."), name="pdf_view")
 # 最後掛載根目錄，提供 index.html, script.js, style.css 等前端檔案
 # html=True 代表預設會尋找 index.html
 app.mount("/", StaticFiles(directory=".", html=True), name="static")
-
-if __name__ == "__main__":
-    import uvicorn
-    # host 設為 "0.0.0.0" 才能接受來自 Tailscale 的連線
-    print("正在啟動伺服器，iPad 請連線至 http://100.99.48.61:8000")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
