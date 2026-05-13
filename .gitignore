@@ -1,6 +1,7 @@
 # Folder exclusions requested by user
 Test/
 Backup/
+AI工作衝刺計畫.txt
 
 # Python environment and cache
 venv/
