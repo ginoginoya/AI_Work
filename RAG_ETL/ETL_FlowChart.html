@@ -340,7 +340,7 @@
                     {<br>
                     &nbsp;&nbsp;"content": "500字精華片段",<br>
                     &nbsp;&nbsp;"metadata": {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;"source": "manual.pdf",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"filename": "manual.pdf",<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;"path": "Data/manual.pdf"<br>
                     &nbsp;&nbsp;}<br>
                     }
@@ -358,7 +358,7 @@
                 <div class="code-preview">
                     ids: ["id_0", "id_1"...],<br>
                     documents: ["文本片段..."],<br>
-                    metadatas: [{source...}],<br>
+                    metadatas: [{filename...}],<br>
                     embeddings: [[0.1, -0.4...]]
 
                 </div>
@@ -401,7 +401,7 @@
                         <td style="padding: 15px 20px; line-height: 1.6;">
                             字典 :<br>
                             <span style="color: #60a5fa;">"content"</span>: all_data的<span style="color: #fb923c;">content</span> ---&gt; 切成固定大小的文字檔案(長度500，重複50)<br>
-                            <span style="color: #60a5fa;">"metadata"</span>: {"source": all_data的<span style="color: #fb923c;">filename</span>, "path": all_data的<span style="color: #fb923c;">path</span>}
+                            <span style="color: #60a5fa;">"metadata"</span>: {"filename": all_data的<span style="color: #fb923c;">filename</span>, "path": all_data的<span style="color: #fb923c;">path</span>}
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid var(--border); transition: background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">

@@ -128,7 +128,7 @@ async function askQuestion() {
         data.references.forEach(ref => {
             refList.innerHTML += `
                 <div class="ref-card">
-                    <strong>來源: ${ref.source}</strong><br> <!-- 顯示手冊來源名稱 -->
+                    <strong>來源: ${ref.filename}</strong><br> <!-- 顯示手冊來源名稱 -->
                     <small>相似度分數: ${ref.score}</small> <!-- 顯示檢索相似度 -->
                     <p>${ref.content.substring(0, 150)}...</p> <!-- 截取內容前 150 字作為摘要 -->
                     <button class="open-btn" onclick="openPDF('${ref.path.replace(/\\/g, '/')}')">開啟 PDF 檔案</button>

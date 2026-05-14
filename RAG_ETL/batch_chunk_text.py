@@ -27,7 +27,7 @@ def create_chunks_with_metadata(all_pdf_data):
             final_chunks.append({
                 "content": chunk_text,
                 "metadata": {
-                    "source": pdf["filename"],
+                    "filename": pdf["filename"],
                     "path": pdf["path"]
                 }
             })
@@ -46,6 +46,6 @@ if __name__ == "__main__":
     
     if processed_chunks:
         print("\n--- 第一個片段範例 ---")
-        print(f"來源文件: {processed_chunks[0]['metadata']['source']}")
+        print(f"來源文件: {processed_chunks[0]['metadata']['filename']}")
         print(f"內容長度: {len(processed_chunks[0]['content'])}")
         print(f"內容前100字: {processed_chunks[0]['content'][:100]}")
