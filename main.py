@@ -7,7 +7,7 @@ import chromadb
 import requests
 import subprocess # 新增：用於執行系統指令，目前僅保留未使用
 from chromadb.utils import embedding_functions
-from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from dotenv import load_dotenv
 
 # 讀取 .env 檔案中的設定
@@ -76,16 +76,17 @@ def ask_question(query: str = Query(..., title="搜尋問題"),
     # 1. 檢索 (只用最新的問題去搜尋，避免歷史訊息干擾搜尋準確度)
     results = collection.query(query_texts=[query], n_results=50, include=["documents", "metadatas", "distances"])
     THRESHOLD = 0.7
-    formatted_results = []
-    for i in range(len(results['ids'][0])):
-        dist = results['distances'][0][i]
-        if dist <= THRESHOLD:
-            formatted_results.append({
-                "content": results['documents'][0][i],
-                "source": results['metadatas'][0][i]['source'],
-                "path": results['metadatas'][0][i]['path'],
-                "score": round(dist, 4)
-            })
+    
+    formatted_results = [
+        {
+            "content": doc,
+            "source": meta["source"],
+            "path": meta["path"],
+            "score": round(dist, 4)
+        }
+        for doc, meta, dist in zip(results["documents"][0], results["metadatas"][0], results["distances"][0])
+        if dist <= THRESHOLD
+    ]
     
     # 2. 生成 (將搜尋結果與對話歷史一併傳給 LLM)
     # 如果完全沒搜到資料，且也沒有歷史對話作為參考，則直接回傳找不到
@@ -110,12 +111,13 @@ def open_pdf(path: str = Query(...,
     try:
         # 取得絕對路徑
         abs_path = os.path.abspath(path)
-        if os.path.exists(abs_path):
-            # Windows 指令：使用預設程式開啟檔案
-            os.startfile(abs_path)
-            return {"status": "success", "message": f"已開啟 {abs_path}"}
-        else:
+        
+        if not os.path.exists(abs_path):
             return {"status": "error", "message": "找不到檔案路徑"}
+            
+        # Windows 指令：使用預設程式開啟檔案
+        os.startfile(abs_path)
+        return {"status": "success", "message": f"已開啟 {abs_path}"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
 

@@ -1,6 +1,8 @@
 # Folder exclusions requested by user
 Test/
 Backup/
+portfolio_minimal_schedule.html
+portfolio_minimal_schedule/
 AI工作衝刺計畫.txt
 
 # Python environment and cache
@@ -18,6 +20,7 @@ Data/
 # IDE settings
 .vscode/
 .idea/
+.agents/
 
 # OS generated files
 Thumbs.db
